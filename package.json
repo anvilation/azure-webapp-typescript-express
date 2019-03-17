@@ -1,0 +1,50 @@
+{
+  "name": "azure-webapp-typescript-express",
+  "version": "0.0.0",
+  "description": "Simple Express App built for Azure Web App using TypeScript",
+  "main": "index.js",
+  "scripts": {
+    "prebuild": "tslint -c tslint.json -p tsconfig.json --fix",
+    "build": "tsc",
+    "dev": "nodemon --watch './src/**/*.ts' --exec ts-node ./src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anvilation/azure-webapp-typescript-express.git"
+  },
+  "keywords": [
+    "Azure",
+    "WebApp",
+    "TypeScript",
+    "ExpressJS"
+  ],
+  "author": "Matthew Barben",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/anvilation/azure-webapp-typescript-express/issues"
+  },
+  "homepage": "https://github.com/anvilation/azure-webapp-typescript-express#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.4",
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "helmet": "^3.16.0",
+    "jsonwebtoken": "^8.5.0",
+    "morgan": "^1.9.1",
+    "reflect-metadata": "^0.1.13",
+    "routing-controllers": "^0.7.7",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/body-parser": "^1.17.0",
+    "@types/dotenv": "^6.1.0",
+    "@types/express": "^4.16.1",
+    "@types/helmet": "0.0.43",
+    "@types/jsonwebtoken": "^8.3.2",
+    "ts-node": "^8.0.3",
+    "tslint": "^5.14.0",
+    "typescript": "^3.3.3333"
+  }
+}
