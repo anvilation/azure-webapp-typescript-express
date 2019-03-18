@@ -14,6 +14,7 @@ import { IndexController, LoginController } from './controller';
 const loglevel = process.env.LOGLEVEL || 'info';
 const port = process.env.PORT || 1337;
 const jwtKey = process.env.JWTKEY || 'complexKey';
+const logDir = process.env.LOGDIR || './log';
 const app = express();
 
 // Setup for Production Environment
@@ -49,7 +50,7 @@ const logger = createLogger({
     }),
     new transports.File({
       level: loglevel,
-      filename: `${process.env.LOGDIR}/server.log`,
+      filename: `${logDir}/server.log`,
       handleExceptions: true,
       json: true,
       maxsize: 5242880, // 5MB
@@ -58,7 +59,7 @@ const logger = createLogger({
     }),
     new transports.File({
       level: 'error',
-      filename: `${process.env.LOGDIR}/error.log`,
+      filename: `${logDir}/error.log`,
       handleExceptions: true,
       json: true,
       maxsize: 5242880, // 5MB
