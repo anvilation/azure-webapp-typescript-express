@@ -1,37 +1,22 @@
 import 'reflect-metadata'; // this shim is required
-import { useExpressServer, Action } from 'routing-controllers';
-import express from 'express';
+import { createExpressServer, Action } from 'routing-controllers';
 const { createLogger, format, transports } = require('winston');
-const { combine, timestamp, label, printf, prettyPrint, simple } = format;
-import helmet from 'helmet';
-import * as bodyParser from 'body-parser';
 import jwt = require('jsonwebtoken');
 
-// Controllers
+// Project Imports
 import { IndexController, LoginController } from './controller';
+import { HelmetMiddleware } from './middleware';
 
-// Express Server
+
+// Express Server Setup
 const loglevel = process.env.LOGLEVEL || 'info';
-const port = process.env.PORT || 1337;
+const port = process.env.PORT || 3000;
 const jwtKey = process.env.JWTKEY || 'complexKey';
 const logDir = process.env.LOGDIR || './log';
-const app = express();
+const environment = process.env.ENV || 'development'
+const useProd = environment === 'production' ? true : false;
 
-// Setup for Production Environment
-if (process.env.ENV !== 'development') {
-  app.set('trust proxy', true);
-  app.use(helmet());
-  app.disabled('x-powered-by');
-}
-
-app.use(
-  bodyParser.urlencoded({
-    extended: true
-  })
-);
-app.use(bodyParser.json());
-
-// Logging
+// Logging Setup
 const logger = createLogger({
   level: process.env.LOGLEVEL,
   format: format.combine(
@@ -77,9 +62,13 @@ logger.stream = {
   }
 };
 
-// Start Server using useExpressServer
 
-useExpressServer(app, {
+
+
+
+const app = createExpressServer({
+  cors: useProd,
+  development: useProd,
   errorOverridingMap: {
     ForbiddenError: {
       message: 'Access is denied'
@@ -102,8 +91,11 @@ useExpressServer(app, {
     const check = confirmUser(token);
     return check;
   },
+
+  middlewares: [HelmetMiddleware],
   controllers: [IndexController, LoginController]
 });
+app.disable("X-Powered-By");
 app.listen(port, () => {
   logger.log({
     level: 'info',
@@ -121,4 +113,5 @@ async function confirmUser(token: any) {
       }
     });
   });
+
 }
