@@ -95,7 +95,7 @@ const app = createExpressServer({
   middlewares: [HelmetMiddleware],
   controllers: [IndexController, LoginController]
 });
-app.disable("X-Powered-By");
+
 app.listen(port, () => {
   logger.log({
     level: 'info',
